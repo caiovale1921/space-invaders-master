@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrap">
+        <header>Space Invaders</header>
+        <div class="game-wrapper">
+            <div class="main"></div>
+                <div class="lose">
+                    <h1>GAME OVER</h1>
+                    <h2>Os aliens dominaram a terra, tente em outra vida!</h2>
+                    <button class="btn" onclick="window.location.reload()">Reiniciar</button>
+                </div>
+                <div class="win">
+                    <h1>PARABÉNS!</h1>
+                    <h2>Você libertou a terra dos aliens!</h2>
+                    <button class="btn" onclick="window.location.reload()">Reiniciar</button>
+                </div>
+        </div>
+        <script src="main.js"></script>
+        <footer></footer>
+    </div>
+</body>
+</html>
