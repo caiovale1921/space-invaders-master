@@ -19,6 +19,7 @@ const STATE = {
   spaceship_width: 50,
   enemy_width: 50,
   cooldown : 0,
+  score : 0,
   number_of_enemies: 16,
   enemy_cooldown : 0,
   gameOver: false,
@@ -27,7 +28,8 @@ const STATE = {
 
 // General purpose functions
 function setPosition($element, x, y) {
-  $element.style.transform = `translate(${x}px, ${y}px)`;
+    if (!STATE.gameOver)
+      $element.style.transform = `translate(${x}px, ${y}px)`;
 }
 
 function setSize($element, width) {
@@ -122,6 +124,7 @@ function createLaser($container, x, y){
   const laser = {x, y, $laser};
   STATE.lasers.push(laser);
   setPosition($laser, x, y);
+  playAllyShot()
 }
 
 function updateLaser($container){
@@ -143,6 +146,9 @@ function updateLaser($container){
         const index = enemies.indexOf(enemy);
         enemies.splice(index,1);
         $container.removeChild(enemy.$enemy);
+        playEnemyHit()
+        STATE.score += 1
+        $('.points').text(STATE.score)
       }
     }
   }
@@ -157,6 +163,7 @@ function createEnemyLaser($container, x, y){
   const enemyLaser = {x, y, $enemyLaser};
   STATE.enemyLasers.push(enemyLaser);
   setPosition($enemyLaser, x, y);
+  playEnemyShot()
 }
 
 function updateEnemyLaser($container){
@@ -167,15 +174,28 @@ function updateEnemyLaser($container){
     if (enemyLaser.y > GAME_HEIGHT-30){
       deleteLaser(enemyLasers, enemyLaser, enemyLaser.$enemyLaser);
     }
+    if (document.querySelector(".player") == null) continue
     const enemyLaser_rectangle = enemyLaser.$enemyLaser.getBoundingClientRect();
     const spaceship_rectangle = document.querySelector(".player").getBoundingClientRect();
     if(collideRect(spaceship_rectangle, enemyLaser_rectangle)){
-      STATE.total_lifes -= 1
-      console.log(STATE.total_lifes)
-      if(STATE.total_lifes < 0){
+      deleteLaser(enemyLasers, enemyLaser, enemyLaser.$enemyLaser);
+      STATE.total_lifes = STATE.total_lifes - 1
+      updateLife()
+      $('.lives img').first().remove();
+      playAllyHit()
+      if(STATE.total_lifes == 0){
+        $('.lives').text('Sem Vidas')
         STATE.gameOver = true;
+        playAllyExplosion()
+        playDeadNotification()
+        
+        $container.removeChild(document.querySelector(".player"));
+        for (let i = 0; i < STATE.enemies.length; i++){
+          $container.removeChild(document.querySelector(".enemy"));
+        }
+        $('.enemyLaser').css('display', 'none')
+        $container.removeChild(document.querySelector(".enemyLaser"));
       }
-      continue
     }
     setPosition(enemyLaser.$enemyLaser, enemyLaser.x + STATE.enemy_width/2, enemyLaser.y+15);
   }
@@ -183,9 +203,48 @@ function updateEnemyLaser($container){
 
 // Delete Laser
 function deleteLaser(lasers, laser, $laser){
-  const index = lasers.indexOf(laser);
-  lasers.splice(index,1);
-  $container.removeChild($laser);
+  if (!STATE.gameOver){
+    const index = lasers.indexOf(laser);
+    lasers.splice(index,1);
+    $container.removeChild($laser);
+  }
+}
+
+function updateLife(){
+  $('#qtdLife').text(STATE.total_lifes)
+}
+
+function playAllyShot(){
+  $('#allyShot')[0].currentTime = 0;
+  $('#allyShot').trigger("play");
+}
+
+function playAllyExplosion(){
+  $('#allyExplosion')[0].currentTime = 0;
+  $('#allyExplosion').trigger("play");
+}
+
+function playEnemyShot(){
+  if(!STATE.gameOver)
+    $('#enemyShot').trigger("play");
+}
+
+function playEnemyHit(){
+  $('#enemyHit')[0].currentTime = 0;
+  $('#enemyHit').trigger("play");
+}
+
+function playDeadNotification(){
+  $('#deadNotification').trigger("play");
+}
+
+function playWinNotification(){
+  $('#winNotificaion').trigger("play");
+}
+
+function playAllyHit(){
+  $('#allyHit')[0].currentTime = 0;
+  $('#allyHit').trigger("play");
 }
 
 // Key Presses
@@ -222,6 +281,7 @@ function update(){
     document.querySelector(".lose").style.display = "block";
   } if (STATE.enemies.length == 0) {
     document.querySelector(".win").style.display = "block";
+    playWinNotification()
   }
 }
 
@@ -233,12 +293,17 @@ function createEnemies($container) {
   }
 }
 
-// Initialize the Game
 const $container = document.querySelector(".main");
-createPlayer($container);
-createEnemies($container);
+
+$("#btnStartGame").click(function(){
+  // Initialize the Game
+  document.querySelector(".menu").style.display = "none";
+  createPlayer($container);
+  createEnemies($container);
+  updateLife()
+  update();
+})
 
 // Key Press Event Listener
 window.addEventListener("keydown", KeyPress);
 window.addEventListener("keyup", KeyRelease);
-update();

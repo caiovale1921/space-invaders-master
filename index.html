@@ -10,19 +10,68 @@
 <body>
     <div class="wrap">
         <header>Space Invaders</header>
+        <div class="score"><strong>Pontuação:</strong> <span class="points">0</span></div>
+        <div class="lives">
+            <img></img>
+            <img></img>
+            <img></img>
+        </div>
         <div class="game-wrapper">
             <div class="main"></div>
                 <div class="lose">
                     <h1>GAME OVER</h1>
                     <h2>Os aliens dominaram a terra, tente em outra vida!</h2>
+                    <h4>Sua pontuação foi: <span class="points">0</span></h4>
                     <button class="btn" onclick="window.location.reload()">Reiniciar</button>
                 </div>
                 <div class="win">
                     <h1>PARABÉNS!</h1>
                     <h2>Você libertou a terra dos aliens!</h2>
+                    <h4>Sua pontuação foi: <span class="points">0</span></h4>
                     <button class="btn" onclick="window.location.reload()">Reiniciar</button>
                 </div>
+                <div class="menu">
+                    <h1>SPACE INVADERS</h1>
+                    <h2>Os aliens estão tentando dominar a terra.<br>
+                        A NASA enviou você para derrotar todos eles!</h2>
+                    <br>
+                    <h3>Você tem 3 vidas - Se perder todas, você morre!</h3>
+                    <button id="btnStartGame">Começar</button>
+                    <hr>
+                    <strong>Orientações</strong>
+                    <br>
+                    <br>
+                    ⇽ : move a nave para a esquerda
+                    <br>
+                    ⇾ : move a nave para a direita
+                    <br>
+                    Espaço: atira
+                </div>
         </div>
+        <!--Audios-->
+        <audio id="allyShot">
+            <source src="audio/ally-shot.wav" type="audio/wav">
+          </audio>
+          <audio id="deadNotification">
+            <source src="audio/dead-notification.wav" type="audio/wav">
+          </audio>
+          <audio id="enemyShot">
+            <source src="audio/enemy-shot.wav" type="audio/wav">
+          </audio>
+          <audio id="winNotificaion">
+            <source src="audio/win-notification.wav" type="audio/wav">
+          </audio>
+          <audio id="enemyHit">
+            <source src="audio/enemy-hit.wav" type="audio/wav">
+          </audio>
+          <audio id="allyExplosion" volume="40">
+            <source src="audio/ally-explosion.wav" type="audio/wav">
+          </audio>
+          <audio id="allyHit">
+            <source src="audio/ally-hit.wav" type="audio/wav">
+          </audio>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
         <script src="main.js"></script>
         <footer></footer>
     </div>
