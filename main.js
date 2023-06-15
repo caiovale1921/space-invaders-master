@@ -103,7 +103,7 @@ function updatePlayer(){
     STATE.x_pos += 3;
   } if(STATE.shoot && STATE.cooldown == 0){
     createLaser($container, STATE.x_pos - STATE.spaceship_width/2, STATE.y_pos);
-    STATE.cooldown = 10;
+    STATE.cooldown = 30;
   }
   const $player = document.querySelector(".player");
   setPosition($player, bound(STATE.x_pos), STATE.y_pos-10);
@@ -208,6 +208,20 @@ function updateLife(){
   $('#qtdLife').text(STATE.total_lifes)
 }
 
+function setVolumes(){
+  $('#soundtrack')[0].volume = 0.4;
+  $('#allyShot')[0].volume = 0.5;
+  $('#allyHit')[0].volume = 0.5;
+  $('#allyExplosion')[0].volume = 0.5;
+  $('#enemyShot')[0].volume = 0.5;
+  $('#enemyHit')[0].volume = 0.5;
+}
+
+function playSoundtrack(){
+  $('#soundtrack')[0].currentTime = 0;
+  $('#soundtrack').trigger("play");
+}
+
 function playAllyShot(){
   $('#allyShot')[0].currentTime = 0;
   $('#allyShot').trigger("play");
@@ -219,8 +233,9 @@ function playAllyExplosion(){
 }
 
 function playEnemyShot(){
-  if(!STATE.gameOver)
+  if(!STATE.gameOver){
     $('#enemyShot').trigger("play");
+  }
 }
 
 function playEnemyHit(){
@@ -288,6 +303,14 @@ function createEnemies($container) {
 const $container = document.querySelector(".main");
 
 $("#btnStartGame").click(function(){
+  if(!$('#chkAudio').prop("checked")){
+    for(var i = 0; i < $('audio').length; i++){
+      $('audio')[i].volume = 0;
+    }
+  }else{
+    setVolumes()
+    playSoundtrack()
+  }
   document.querySelector(".menu").style.display = "none";
   createPlayer($container);
   createEnemies($container);

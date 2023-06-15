@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Invaders</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body>
     <div class="wrap">
@@ -35,10 +36,12 @@
                     <h2>Os aliens estão tentando dominar a terra.<br>
                         A NASA enviou você para derrotar todos eles!</h2>
                     <br>
-                    <h3>Você tem 3 vidas - Se perder todas, você morre!</h3>
-                    <button id="btnStartGame">Começar</button>
+                    <h3>Você tem 3 vidas - cada vez que for atingido você perde uma!</h3>
+                    <h5>Seu objetivo é derrubar todas as naves inimigas antes de ser eliminado.</h5>
+                    <button id="btnStartGame">Começar</button> | 
+                    <input type="checkbox" id="chkAudio" checked>Audio</input>
                     <hr>
-                    <strong>Orientações</strong>
+                    <strong>Controles:</strong>
                     <br>
                     <br>
                     ⇽ : move a nave para a esquerda
@@ -49,7 +52,10 @@
                 </div>
         </div>
         <!--Audios-->
-        <audio id="allyShot">
+        <audio id="soundtrack" loop="true">
+            <source src="audio/soundtrack.mp3" type="audio/mp3">
+          </audio>
+          <audio id="allyShot">
             <source src="audio/ally-shot.wav" type="audio/wav">
           </audio>
           <audio id="deadNotification">
